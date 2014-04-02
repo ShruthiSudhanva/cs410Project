@@ -54,7 +54,7 @@ public class HotelIndexer
 			String specID = "3";
 			String location = "new york";
 			String name = "Hilton";
-			String other = "central park";
+			String other = "times square";
 			Query query1 = new QueryParser(Version.LUCENE_47, "specID",analyzer).parse(specID); 
 			Query query2 = new QueryParser(Version.LUCENE_47, "location",analyzer).parse(location);
 			Query query3 = new QueryParser(Version.LUCENE_47, "name",analyzer).parse(name);

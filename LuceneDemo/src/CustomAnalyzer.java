@@ -1,3 +1,5 @@
+/*Query expansion using wordnet - not necessary, but just in case*/
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.ParseException;
+import java.util.Collections;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -41,7 +44,7 @@ public class CustomAnalyzer extends Analyzer {
 	
 	private SynonymMap buildSynonym() throws IOException, ParseException
 	{
-		File file = new File("wn/wn_s.pl");
+		File file = new File("C:\\My Box Files\\CS410_TIS\\Project\\prolog\\wn_s.pl");
 		InputStream stream = new FileInputStream(file);
 		Reader rulesReader = new InputStreamReader(stream); 
 		SynonymMap.Builder parser = null;
