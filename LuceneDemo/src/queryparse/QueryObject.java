@@ -105,6 +105,21 @@ public class QueryObject {
 		miscSpecification.setWeight(0.2f).setRating(3).setMapEntry("misc", "Union Station");
 		exampleQueries[2].setSpecification(locationSpecification).setSpecification(miscSpecification);	
 		
+		//Query4 = "Clean hotels in Seattle with good room service"
+		exampleQueries[3] = new QueryObject("MayFlower Park Hotel");
+		Specification cleanlinessSpecification = new Specification("cleanliness");
+		cleanlinessSpecification.setWeight(0.4f).setRating(4).setMapEntry("cleanliness", "clean");
+		locationSpecification.setWeight(0.2f).setRating(3).setMapEntry("location", "Seattle");
+		Specification serviceSpecification = new Specification("service");
+		serviceSpecification.setWeight(0.4f).setRating(4).setMapEntry("service", "good");
+		exampleQueries[3].setSpecification(cleanlinessSpecification).setSpecification(locationSpecification).setSpecification(serviceSpecification);
+			
+		//Query5 = "San Jose Airport hotel"
+		exampleQueries[4] = new QueryObject("Hyatt Hotel");
+		locationSpecification.setWeight(0.3f).setRating(3).setMapEntry("location", "San Jose");
+		miscSpecification.setWeight(0.2f).setRating(3).setMapEntry("misc", "Airport");
+		exampleQueries[4].setSpecification(locationSpecification).setSpecification(miscSpecification);
+		
 		return exampleQueries;
 	}
 	
