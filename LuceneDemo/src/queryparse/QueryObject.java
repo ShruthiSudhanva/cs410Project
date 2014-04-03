@@ -98,7 +98,12 @@ public class QueryObject {
 		roomSpecification.setWeight(0.3f).setRating(3).setMapEntry("room", "big");
 		exampleQueries[1].setSpecification(valueSpecification).setSpecification(locationSpecification).setSpecification(roomSpecification);
 		
-		//Query3 = 	
+		//Query3 = "Hotel close to Chicago Union Station"
+		exampleQueries[2] = new QueryObject("Congress Plaza Hotel");
+		Specification miscSpecification = new Specification("misc");
+		locationSpecification.setWeight(0.3f).setRating(3).setMapEntry("location", "Chicago");
+		miscSpecification.setWeight(0.2f).setRating(3).setMapEntry("misc", "Union Station");
+		exampleQueries[2].setSpecification(locationSpecification).setSpecification(miscSpecification);	
 		
 		return exampleQueries;
 	}
