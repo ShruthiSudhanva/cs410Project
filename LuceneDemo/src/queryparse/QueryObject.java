@@ -124,7 +124,51 @@ public class QueryObject {
 	}
 	
 	public static void  main(String args[]) {
-		examples();
+		QueryObject[] EQ = examples();
+		
+		/*The code below prints Specification objects which in turn contains Aspects Map from which required details can be extracted
+		for(int i=0;i<EQ.length;i++)
+		{
+			System.out.println("Printing " + i + " Query Object");
+			
+			System.out.println(EQ[i].getHotelName());
+			if(EQ[i].getSpecification("location")!=null)
+			{
+			System.out.print("location: ");
+			System.out.print(EQ[i].getSpecification("location"));
+			System.out.println();
+			}
+			if(EQ[i].getSpecification("misc")!=null)
+			{
+		    System.out.print("miscellaneous: ");
+			System.out.println(EQ[i].getSpecification("misc"));
+			System.out.println();
+			}
+			if(EQ[i].getSpecification("price")!=null)
+			{
+			System.out.print("Value: ");
+			System.out.print(EQ[i].getSpecification("price"));
+			System.out.println();
+			}
+			if(EQ[i].getSpecification("service")!=null)
+			{
+			System.out.print("Service: ");
+			System.out.print(EQ[i].getSpecification("service"));
+			System.out.println();
+			}
+			if(EQ[i].getSpecification("cleanliness")!=null)
+			{
+		    System.out.print("Cleanliness: ");
+			System.out.print(EQ[i].getSpecification("cleanliness"));
+			System.out.println();
+			}
+			if(EQ[i].getSpecification("room")!=null)
+			{
+			System.out.print("Room: ");
+			System.out.print(EQ[i].getSpecification("room"));
+			System.out.println();
+			}
+		}*/
 	}
 	
 }
