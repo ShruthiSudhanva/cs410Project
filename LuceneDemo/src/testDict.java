@@ -156,7 +156,7 @@ public static void main(String[] args)
     	queryBuilder.append(",");
     }
     String query=queryBuilder.toString();
-    System.out.println(query);
+    //System.out.println(query);
     HashMap<String,String> hm_result=new HashMap<String,String>();
     hm_result=getFromDictionary(hm,query);
      /*for(String key:hm_result.keySet())
