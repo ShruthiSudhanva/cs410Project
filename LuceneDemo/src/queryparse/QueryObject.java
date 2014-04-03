@@ -102,7 +102,7 @@ public class QueryObject {
 		exampleQueries[2] = new QueryObject("Congress Plaza Hotel");
 		Specification miscSpecification = new Specification("misc");
 		locationSpecification.setWeight(0.3f).setRating(3).setMapEntry("location", "Chicago");
-		miscSpecification.setWeight(0.2f).setRating(3).setMapEntry("misc", "Union Station");
+		miscSpecification.setWeight(0.1f).setRating(3).setMapEntry("misc", "Union Station");
 		exampleQueries[2].setSpecification(locationSpecification).setSpecification(miscSpecification);	
 		
 		//Query4 = "Clean hotels in Seattle with good room service"
@@ -117,7 +117,7 @@ public class QueryObject {
 		//Query5 = "San Jose Airport hotel"
 		exampleQueries[4] = new QueryObject("Hyatt Hotel");
 		locationSpecification.setWeight(0.3f).setRating(3).setMapEntry("location", "San Jose");
-		miscSpecification.setWeight(0.2f).setRating(3).setMapEntry("misc", "Airport");
+		miscSpecification.setWeight(0.1f).setRating(3).setMapEntry("misc", "Airport");
 		exampleQueries[4].setSpecification(locationSpecification).setSpecification(miscSpecification);
 		
 		return exampleQueries;
