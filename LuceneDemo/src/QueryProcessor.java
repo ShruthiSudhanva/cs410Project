@@ -41,7 +41,9 @@ public class QueryProcessor {
 	GrammaticalStructureFactory gsf;
 	public static HashMap<String, Integer> adverbMap;
 	public static HashMap<String, Integer> adjectiveMap;	
-
+	public static HashMap<String,String> priceAdjectives;
+	public static ArrayList<String> locationWords;
+	
 	public QueryProcessor() throws IOException
 	{
 		if(lp==null)
@@ -81,10 +83,33 @@ public class QueryProcessor {
 			}
 			br.close();
 		}
+		if(priceAdjectives==null)
+		{
+			priceAdjectives = new HashMap<String, String>();
+			BufferedReader br = new BufferedReader(new FileReader("/home/shruthi/cs410Project/LuceneDemo/src/priceAdjectives.txt"));
+			String line;
+			while ((line = br.readLine()) != null) {
+			   String [] fields = line.split(" ");
+			   priceAdjectives.put(fields[0], fields[1]);
+			}
+			br.close();
+		}
+		if(locationWords==null)
+		{
+			locationWords = new ArrayList<String>();
+			BufferedReader br = new BufferedReader(new FileReader("/home/shruthi/cs410Project/LuceneDemo/src/locationDictionary.txt"));
+			String line;
+			while ((line = br.readLine()) != null) {
+			   String [] fields = line.split(" ");
+			   for(String word: fields)
+				   locationWords.add(word);
+			}
+			br.close();
+		}
 	}
 	
 	
-	public float dependencyParse(String query) {
+	public int dependencyParse(String query) {
 		
 		String[] sent = query.split("[ ]+");
 		Tree parse = lp.apply(Sentence.toWordList(sent));
@@ -112,8 +137,7 @@ public class QueryProcessor {
 			}
 			//System.out.println(tdDependency + "    Relation->" + tdDependency.reln() + "   Dependency->" + tdDependency.dep().pennString());
 	    }
-		System.out.println(query + " " +rating/2);
-		return rating/2;
+		return (int)rating*3/10;
 	}
 	
 	public ArrayList<String> chunk(String query) {
@@ -133,13 +157,14 @@ public class QueryProcessor {
 		{
 			Token w = (Token) nextObject;
 			String tag = tagger.discreteValue(w);
+			//System.out.println(tokens[token] + " " +tag);
 			if(tag.contains("B-NP"))
 			{
 				if(nounPhrase!=null)
 					nounPhrases.add(nounPhrase);
 				nounPhrase = tokens[token];
 			}
-			if(tag.contains("I-NP"))
+			if(tag.contains("I-NP")|| tag.contains("ADJP") )
 			{
 				nounPhrase = nounPhrase.concat(" "+tokens[token]);
 			}
@@ -150,27 +175,70 @@ public class QueryProcessor {
 		return nounPhrases;
 	}
 	
-	public static void main(String args[]) throws IOException{
-		QueryProcessor qProcessor = new QueryProcessor();
-		/* This is slow. Not sure why. And needs more parsing!*/
-		String query = "Find extremely cheap hotels in exceptionally good location in Chicago";
-		ArrayList<String> nounPhrases = qProcessor.chunk(query);
-		//Change AspectGenerator to take input as ArrayList of strings
-		//Change output to be chunk => aspect 
-		/*Sindu's function called here*/
+	public Specification createSpecification(String aspect, int rating, String nounPhrase, String query)
+	{
+		Specification specification = new Specification(aspect);
+		specification.setRating(rating);
+		if(aspect == "value")
+		{
+			if(nounPhrase.contains("$"))
+				for(String word: priceAdjectives.keySet())
+					if(query.contains(word))
+						specification.setMapEntry("price", priceAdjectives.get(word)+nounPhrase);
+		}
+		if(aspect == "location")
+		{
+			for(String word: locationWords)
+			{
+				if(nounPhrase.contains(word))
+				{
+					specification.setMapEntry("location", word);
+				}
+			}
+		}
+		if(aspect == "room" || aspect == "service" || aspect == "cleanliness")
+		{
+			specification.setMapEntry("misc", nounPhrase);
+		}
+		return specification;
+	}
+	
+	public QueryObject processQuery(String query) {
 		
+		/* This is slow. Not sure why. And needs more parsing!*/
+		
+		ArrayList<String> nounPhrases = chunk(query);
+		/*Sindu's function called here*/
+		HashMap<String, String> aspectsHashMap = new HashMap<String, String>();
 		//To find hotel location - prep_in and prep_near???
-		//To find hotel name???
+		//To find hotel name??? -- Find hotel/suites/inn beside etc.
 		
 		//Do the following to only the chunks that returned an aspect
 		//Create a QueryObject
+		aspectsHashMap.put("Hotels", "misc");
+		aspectsHashMap.put("central Seattle", "location");
+		aspectsHashMap.put("excellent service", "service");
 		QueryObject queryObject = new QueryObject("");
+		//For aspects not present set rating to default (0)
 		for(String nounPhrase: nounPhrases)
 		{
-			float rating = qProcessor.dependencyParse(nounPhrase);
-			//for each corresponding aspect create a specification
-				//Specification specification = new Specification(aspect);
-				//specification.setRating(rating);
+			int rating = dependencyParse(nounPhrase);
+			String aspect = aspectsHashMap.get(nounPhrase);
+			if(!aspect.equals("misc"))
+			{
+				rating+=2;
+				System.out.println(nounPhrase + "-" +rating);
+				Specification specification = createSpecification(aspect, rating, nounPhrase, query);
+				//System.out.println(specification.getMapEntry("location"));
+				queryObject.setSpecification(specification);
+			}
 		}
+		return queryObject;
+	}
+	
+	public static void main(String args[]) throws IOException{
+		QueryProcessor qProcessor = new QueryProcessor();
+		String query = "Hotels in central Seattle with excellent service";
+		QueryObject queryObject = qProcessor.processQuery(query);
 	}
 }

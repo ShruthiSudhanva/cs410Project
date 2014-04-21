@@ -10,9 +10,9 @@ public class DatasetParser {
 	File folder;
 	BufferedReader bReader;
 	File [] listOfFiles;
-	public DatasetParser(String path) throws IOException
+	public DatasetParser(String dirpath) throws IOException
 	{
-		folder = new File(path);
+		folder = new File(dirpath);
 		listOfFiles = folder.listFiles();
 	}
 	//List all files in folder

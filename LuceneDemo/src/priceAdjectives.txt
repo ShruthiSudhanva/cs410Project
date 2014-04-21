@@ -1,0 +1,9 @@
+cheaper <
+lesser <
+less <
+lower <
+under <
+greater >
+above >
+more >
+around =
