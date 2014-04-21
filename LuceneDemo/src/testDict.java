@@ -34,9 +34,11 @@ public class testDict{
 		java.util.StringTokenizer tokenizer = new java.util.StringTokenizer(query,",");
 		String s;
 		while(tokenizer.hasMoreTokens())
-		{
+		{  
 			s=tokenizer.nextToken();
-			if(s.indexOf(" ")!=-1)
+			if(s.contains("$"))
+				identified_tags.put(s, "value");
+			else if(s.indexOf(" ")!=-1)
 			{
 			java.util.StringTokenizer tokenizermini = new java.util.StringTokenizer(s," ");
 			while(tokenizermini.hasMoreTokens())
@@ -46,8 +48,7 @@ public class testDict{
 	 				{
 	 				String tag=hm.get(word);
 	 				    //identified_tags.put(word,tag);
-	 					identified_tags.put(s,tag);
-	 					
+	 					identified_tags.put(s,tag); 			
 	 				}
 	 			else
 	 			{
@@ -72,7 +73,7 @@ public class testDict{
 					identified_tags.put(s, "misc");
 				}
 		   	   }
-		}
+		     }
 			}
 		}	
 	}
@@ -80,8 +81,9 @@ public class testDict{
 	{
 	if(query!="" && query!=null)
 		{
-		
-		if(query.indexOf(" ")!=-1)
+		if(query.contains("$"))
+			identified_tags.put(query, "value");
+		else if(query.indexOf(" ")!=-1)
 		{
 		java.util.StringTokenizer tokenizermini = new java.util.StringTokenizer(query," ");
 		while(tokenizermini.hasMoreTokens())
@@ -160,7 +162,8 @@ public static void main(String[] args)
 {
 	HashMap<String,String> hm=new HashMap<String,String>();
     hm=buildDictionary("C:\\Users\\sindu_000\\TISProject\\ReviewMiner\\src\\hotel_bootstrapping_new.dat");
-	/*for(String key:hm.keySet())
+	
+        /*for(String key:hm.keySet())
 		{
 		System.out.println(key+" "+hm.get(key));
 		}*/
@@ -182,9 +185,9 @@ public static void main(String[] args)
     queryList.add("chicago");
     queryList.add("good location");
     queryList.add("good location");
-    queryList.add("$ 200");
+    queryList.add("$200");
     queryList.add("cheap price");
-   
+ 
     HashMap<String,String> hm_result=new HashMap<String,String>();
     hm_result=getFromDictionary(hm,queryList);
      for(String key:hm_result.keySet())
