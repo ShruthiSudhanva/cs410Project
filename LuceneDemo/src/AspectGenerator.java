@@ -2,6 +2,7 @@
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -118,7 +119,7 @@ public class AspectGenerator {
 	}
 	return hm;
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		HashMap<String,String> hm=new HashMap<String,String>();
 	    hm=buildDictionary("/home/shruthi/cs410Project/LuceneDemo/src/hotel_bootstrapping_new.dat");
@@ -140,6 +141,8 @@ public class AspectGenerator {
 	    
 	    //after noun phrases are identified query is the noun phrases string delimited by , and " " within
 	    String query="hotel,chicago,good location,good location,cheap price, large room";
+	    QueryProcessor processor = new QueryProcessor();
+	    
 	    HashMap<String,String> hm_result=new HashMap<String,String>();
 	    hm_result=getFromDictionary(hm,query);
 	     for(String key:hm_result.keySet())

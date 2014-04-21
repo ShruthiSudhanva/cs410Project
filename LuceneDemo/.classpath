@@ -9,5 +9,7 @@
 	<classpathentry kind="lib" path="/home/shruthi/cs410/LBJ2Library.jar"/>
 	<classpathentry kind="lib" path="/home/shruthi/cs410/LBJChunk.jar"/>
 	<classpathentry kind="lib" path="/home/shruthi/cs410/LBJPOS.jar"/>
+	<classpathentry kind="lib" path="/home/shruthi/cs410/stanford-parser-full-2014-01-04/stanford-parser.jar"/>
+	<classpathentry kind="lib" path="/home/shruthi/cs410/stanford-parser-full-2014-01-04/stanford-parser-3.3.1-models.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

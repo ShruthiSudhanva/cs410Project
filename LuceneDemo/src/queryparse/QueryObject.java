@@ -2,53 +2,6 @@ package queryparse;
 
 import java.util.HashMap;
 
-class Specification
-{
-	String aspectName;
-	float weight;
-	int rating;
-	HashMap<String, String> specificationMap;
-	
-	public Specification(String aspectName)
-	{
-		this.aspectName = aspectName;
-		specificationMap= new HashMap<String, String>();
-	}
-	
-	public String getAspectName() {
-		return aspectName;
-	}
-	
-	public Specification setWeight(float weight)
-	{
-		this.weight = weight;
-		return this;
-	}
-	
-	public float getWeight() {
-		return weight;
-	}
-	
-	public Specification setRating(int rating) {
-		this.rating = rating;
-		return this;
-	}
-	
-	public int getRating() {
-		return rating;
-	}
-	
-	public Specification setMapEntry(String specificationName, String value) {
-		specificationMap.put(specificationName, value);
-		return this;
-	}
-	
-	public String getMapEntry(String specificationName) {
-		return specificationMap.get(specificationName);
-	}
-}
-
-
 public class QueryObject {
 
 	private String hotelName;
@@ -126,49 +79,6 @@ public class QueryObject {
 	public static void  main(String args[]) {
 		QueryObject[] EQ = examples();
 		
-		/*The code below prints Specification objects which in turn contains Aspects Map from which required details can be extracted
-		for(int i=0;i<EQ.length;i++)
-		{
-			System.out.println("Printing " + i + " Query Object");
-			
-			System.out.println(EQ[i].getHotelName());
-			if(EQ[i].getSpecification("location")!=null)
-			{
-			System.out.print("location: ");
-			System.out.print(EQ[i].getSpecification("location"));
-			System.out.println();
-			}
-			if(EQ[i].getSpecification("misc")!=null)
-			{
-		    System.out.print("miscellaneous: ");
-			System.out.println(EQ[i].getSpecification("misc"));
-			System.out.println();
-			}
-			if(EQ[i].getSpecification("price")!=null)
-			{
-			System.out.print("Value: ");
-			System.out.print(EQ[i].getSpecification("price"));
-			System.out.println();
-			}
-			if(EQ[i].getSpecification("service")!=null)
-			{
-			System.out.print("Service: ");
-			System.out.print(EQ[i].getSpecification("service"));
-			System.out.println();
-			}
-			if(EQ[i].getSpecification("cleanliness")!=null)
-			{
-		    System.out.print("Cleanliness: ");
-			System.out.print(EQ[i].getSpecification("cleanliness"));
-			System.out.println();
-			}
-			if(EQ[i].getSpecification("room")!=null)
-			{
-			System.out.print("Room: ");
-			System.out.print(EQ[i].getSpecification("room"));
-			System.out.println();
-			}
-		}*/
 	}
 	
 }
