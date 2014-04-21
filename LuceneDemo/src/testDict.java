@@ -1,7 +1,7 @@
 /*
 
 buildDictionary method takes the hotel_bootstrapping_new.dat file as input and builds the dictionary and results a hashmap.
-
+ 
 getFromDictionary method takes the Query in the form of only noun phrases in this format:
 nounphrase1a nounphrase1b,nounphrase2,nounphrase3,nounphrase3a nounphrase3b
 So, it has to be called right after LBJ is called with the query string as the parameter. Since we need the dictionary from previous step - we pass dictionary,query as the parameters.
