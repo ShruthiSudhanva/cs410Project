@@ -39,30 +39,23 @@ public class HotelIndexer
 			IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_47, analyzer);
 			
 			IndexWriter w = new IndexWriter(index, config);
-			addDoc(w, "1","Chicago", "Best Western Downtown","close to lake navy pier");
-			addDoc(w, "2","Chicago", "Whitehall Suites","right on the magnificient mile");
-			addDoc(w, "2","New York", "Marriott New York","great location times square");
-			addDoc(w, "3","New York", "Hilton Times Square","a block from times square");
-			addDoc(w, "3","New York", "Holiday Inn Central","view central park from the window");
-			addDoc(w, "4","Seattle", "Best Western Pioneer Square Hotel","cheap and comfortable");
+			//Use DataSetParser here
+			addDoc(w, "Ace Hotel", "Best Western Downtown close to lake navy pier");
+			addDoc(w, "Whitehall Suites", "Wouldn't recommend it. ");
+			addDoc(w, "Marriott New York","great location times square");
+			addDoc(w, "Hilton Times Square","a block from times square");
+			addDoc(w, "Holiday Inn Central","view central park from the window");
+			addDoc(w, "Best Western Pioneer Square Hotel","cheap and comfortable");
 			w.close();
 			
 			BooleanQuery qry = new BooleanQuery();
 			
-			
-			//	Text to search
-			String specID = "3";
-			String location = "new york";
 			String name = "Hilton";
 			String other = "times square";
-			Query query1 = new QueryParser(Version.LUCENE_47, "specID",analyzer).parse(specID); 
-			Query query2 = new QueryParser(Version.LUCENE_47, "location",analyzer).parse(location);
-			Query query3 = new QueryParser(Version.LUCENE_47, "name",analyzer).parse(name);
-			Query query4 = new QueryParser(Version.LUCENE_47, "contents",analyzer).parse(other);
+			Query query1 = new QueryParser(Version.LUCENE_47, "name",analyzer).parse(name);
+			Query query2 = new QueryParser(Version.LUCENE_47, "contents",analyzer).parse(other);
 			qry.add(query1, BooleanClause.Occur.SHOULD);
 			qry.add(query2, BooleanClause.Occur.SHOULD);
-			qry.add(query3, BooleanClause.Occur.SHOULD);
-			qry.add(query4, BooleanClause.Occur.SHOULD);
 			// Searching code
 			int hitsPerPage = 10;
 		    IndexReader reader = DirectoryReader.open(index);
@@ -77,7 +70,7 @@ public class HotelIndexer
 		    {
 		      int docId = hits[i].doc;
 		      Document d = searcher.doc(docId);
-		      System.out.println((i + 1) + ". " + d.get("specID")+"\t"+d.get("name") + "\t" + d.get("location"));
+		      System.out.println((i + 1) + ". " +d.get("name") + "\t" + d.get("contents"));
 		    }
 		    
 		    // reader can only be closed when there is no need to access the documents any more
@@ -88,14 +81,12 @@ public class HotelIndexer
 			System.out.println(e.getMessage());
 		}
 	}
-	private static void addDoc(IndexWriter w,  String specID, String location, String name, String contents) throws IOException 
+	private static void addDoc(IndexWriter w,  String name, String contents) throws IOException 
 	{
 		  Document doc = new Document();
-		  doc.add(new StringField("specID", specID, Field.Store.YES));
+		  doc.add(new StringField("name", name, Field.Store.YES));
 		  // A text field will be tokenized
-		  doc.add(new TextField("location", location, Field.Store.YES));
 		  // We use a string field for name because we don\'t want it tokenized
-		  doc.add(new TextField("name", name, Field.Store.YES));
 		  doc.add(new TextField("contents", contents, Field.Store.YES)); 
 		  w.addDocument(doc);
 	}

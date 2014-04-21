@@ -41,7 +41,7 @@ public class QueryProcessor {
 	GrammaticalStructureFactory gsf;
 	public static HashMap<String, Integer> adverbMap;
 	public static HashMap<String, Integer> adjectiveMap;	
-	
+
 	public QueryProcessor() throws IOException
 	{
 		if(lp==null)
@@ -53,6 +53,12 @@ public class QueryProcessor {
 		if(tlp==null)
 			tlp = new PennTreebankLanguagePack();
 		gsf = tlp.grammaticalStructureFactory();
+		createWordMaps();
+	}
+
+	/*A module to read a list of adverbs and adjectives to parse for*/
+	public void createWordMaps() throws NumberFormatException, IOException
+	{
 		if(adverbMap==null)
 		{
 			adverbMap = new HashMap<String, Integer>();
@@ -76,6 +82,7 @@ public class QueryProcessor {
 			br.close();
 		}
 	}
+	
 	
 	public float dependencyParse(String query) {
 		
@@ -103,7 +110,7 @@ public class QueryProcessor {
 					rating+=adverbMap.get(adverb);
 				}
 			}
-			System.out.println(tdDependency + "    Relation->" + tdDependency.reln() + "   Dependency->" + tdDependency.dep().pennString());
+			//System.out.println(tdDependency + "    Relation->" + tdDependency.reln() + "   Dependency->" + tdDependency.dep().pennString());
 	    }
 		System.out.println(query + " " +rating/2);
 		return rating/2;
@@ -152,7 +159,7 @@ public class QueryProcessor {
 		//Change output to be chunk => aspect 
 		/*Sindu's function called here*/
 		
-		//To find hotel location???
+		//To find hotel location - prep_in and prep_near???
 		//To find hotel name???
 		
 		//Do the following to only the chunks that returned an aspect
