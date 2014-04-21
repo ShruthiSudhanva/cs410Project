@@ -12,8 +12,21 @@ Note:uncomment the for loops in this code to see output.
 import java.io.*;
 import java.util.*;
 public class testDict{
-	public static HashMap<String,String> getFromDictionary(java.util.HashMap<String,String> hm, String query)
+	public static HashMap<String,String> getFromDictionary(java.util.HashMap<String,String> hm, ArrayList<String> queryList)
 	{
+	
+		 StringBuilder queryBuilder = new StringBuilder();
+		    int last=queryList.size();
+		    last=last-1;
+		    for(int i=0;i<last+1;i++)
+		    {
+		    	queryBuilder.append(queryList.get(i));
+		    	if(i!=last)
+		    	queryBuilder.append(",");
+		    }
+		    String query=queryBuilder.toString();
+		    System.out.println(query);
+		
 	java.util.HashMap<String,String> identified_tags = new java.util.HashMap<String,String>();
 	
 	if(query.indexOf(",")!=-1)
@@ -32,14 +45,14 @@ public class testDict{
 	 			if(hm.get(word)!=null)
 	 				{
 	 				String tag=hm.get(word);
-	 				if(identified_tags.get(tag)==null)
-	 					{
-	 					identified_tags.put(word,tag);
-	 					}
+	 				    //identified_tags.put(word,tag);
+	 					identified_tags.put(s,tag);
+	 					
 	 				}
 	 			else
 	 			{
-	 				identified_tags.put(word, "misc");
+	 				//identified_tags.put(word, "misc");
+	 				identified_tags.put(s, "misc");
 	 			}
 				}
 			}
@@ -67,6 +80,29 @@ public class testDict{
 	{
 	if(query!="" && query!=null)
 		{
+		
+		if(query.indexOf(" ")!=-1)
+		{
+		java.util.StringTokenizer tokenizermini = new java.util.StringTokenizer(query," ");
+		while(tokenizermini.hasMoreTokens())
+			{
+ 			String word=tokenizermini.nextToken();
+ 			if(hm.get(word)!=null)
+ 				{
+ 				String tag=hm.get(word);
+ 					//identified_tags.put(word,tag);
+ 					identified_tags.put(query,tag);
+ 					
+ 				}
+ 			else
+ 			{
+ 				if(identified_tags.get(query)==null)
+ 				identified_tags.put(query, "misc");
+ 			}
+			}
+		}
+		else
+		{
 		if(identified_tags.get(query)==null)
 		   {	
 				if(hm.get(query)!=null)
@@ -79,6 +115,7 @@ public class testDict{
 				identified_tags.put(query, "misc");
 				}
 		   }
+		} //else
 		}
 	}
 	return identified_tags;
@@ -141,26 +178,17 @@ public static void main(String[] args)
     
     //after noun phrases are identified query is the noun phrases string delimited by , and " " within
     java.util.ArrayList<String> queryList=new java.util.ArrayList<String>();
-    queryList.add("hotel");
+    queryList.add("hotel location price");
     queryList.add("chicago");
     queryList.add("good location");
     queryList.add("good location");
+    queryList.add("$ 200");
     queryList.add("cheap price");
-    StringBuilder queryBuilder = new StringBuilder();
-    int last=queryList.size();
-    last=last-1;
-    for(int i=0;i<last+1;i++)
-    {
-    	queryBuilder.append(queryList.get(i));
-    	if(i!=last)
-    	queryBuilder.append(",");
-    }
-    String query=queryBuilder.toString();
-    //System.out.println(query);
+   
     HashMap<String,String> hm_result=new HashMap<String,String>();
-    hm_result=getFromDictionary(hm,query);
-     /*for(String key:hm_result.keySet())
-    	System.out.println(key+" "+hm_result.get(key));
-    	*/
+    hm_result=getFromDictionary(hm,queryList);
+     for(String key:hm_result.keySet())
+    	System.out.println(key+"=>"+hm_result.get(key));
+    	
 }
 }
