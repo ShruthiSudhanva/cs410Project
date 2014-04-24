@@ -1,5 +1,6 @@
 package queryparse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Specification {
@@ -7,12 +8,12 @@ public class Specification {
 	String aspectName;
 	float weight;
 	int rating;
-	HashMap<String, String> specificationMap;
+	HashMap<String, ArrayList<String>> specificationMap;
 	
 	public Specification(String aspectName)
 	{
 		this.aspectName = aspectName;
-		specificationMap= new HashMap<String, String>();
+		specificationMap= new HashMap<String, ArrayList<String>>();
 	}
 	
 	public String getAspectName() {
@@ -39,11 +40,22 @@ public class Specification {
 	}
 	
 	public Specification setMapEntry(String specificationName, String value) {
-		specificationMap.put(specificationName, value);
+		if(specificationMap.containsKey(specificationName))
+		{
+			ArrayList<String> words = specificationMap.get(specificationName);
+			if(!words.contains(value))
+				words.add(value);
+			specificationMap.put(specificationName, words);
+		}
+		else {
+			ArrayList<String> words = new ArrayList<String>();
+			words.add(value);
+			specificationMap.put(specificationName, words);
+		}
 		return this;
 	}
 	
-	public String getMapEntry(String specificationName) {
+	public ArrayList<String> getMapEntry(String specificationName) {
 		return specificationMap.get(specificationName);
 	}
 }

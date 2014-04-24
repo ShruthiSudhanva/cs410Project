@@ -22,6 +22,10 @@ public class QueryObject {
 		return aspects.get(aspect);
 	}
 	
+	public boolean hasSpecification(String aspect) {
+		return aspects.containsKey(aspect);
+	}
+	
 	public String getHotelName() {
 		return hotelName;
 	}
@@ -72,6 +76,8 @@ public class QueryObject {
 		locationSpecification.setWeight(0.3f).setRating(3).setMapEntry("location", "San Jose");
 		miscSpecification.setWeight(0.1f).setRating(3).setMapEntry("misc", "Airport");
 		exampleQueries[4].setSpecification(locationSpecification).setSpecification(miscSpecification);
+		
+		System.out.println(exampleQueries[4].hasSpecification("location"));
 		
 		return exampleQueries;
 	}
