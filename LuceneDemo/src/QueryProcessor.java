@@ -45,6 +45,7 @@ public class QueryProcessor {
 	public static HashMap<String,String> priceAdjectives;
 	public static ArrayList<String> locationWords;
 	public QueryObject queryObject;
+	public Chunker tagger;
 	
 	public QueryProcessor() throws IOException
 	{
@@ -57,6 +58,7 @@ public class QueryProcessor {
 		if(tlp==null)
 			tlp = new PennTreebankLanguagePack();
 		gsf = tlp.grammaticalStructureFactory();
+		tagger = new Chunker(); 
 		createWordMaps();
 	}
 
@@ -152,7 +154,7 @@ public class QueryProcessor {
 	}
 	
 	public ArrayList<String> chunk(String query) {
-		Chunker tagger = new Chunker();
+		
 		//String query = "clean and big hotel in Seattle in good location";
 		ArrayList<String> nounPhrases = new ArrayList<String>();
 		String[] tokens = query.split("[ ]+");
@@ -207,14 +209,14 @@ public class QueryProcessor {
 		if(aspect.contains("value"))
 		{
 			specification.setMapEntry("price", returnValue.nounPhrase);
-			System.out.println("value " + specification.getMapEntry("price"));
+			System.out.println("value " + specification.getMapEntry("price")+ " " + specification.getRating());
 		}
 		if(aspect.contains("location"))
 		{
 			for(String word: aspectSet.get(aspect))
 			{
 					specification.setMapEntry("location", returnValue.nounPhrase);
-					System.out.println("location " + specification.getMapEntry("location"));
+					System.out.println("location " + specification.getMapEntry("location")+" "+specification.getRating());
 			}
 		}
 		if(aspect.contains("room"))
@@ -222,7 +224,7 @@ public class QueryProcessor {
 			for(String word: aspectSet.get(aspect))
 			{
 					specification.setMapEntry("room", returnValue.nounPhrase);
-					System.out.println("room " + specification.getMapEntry("room"));
+					System.out.println("room " + specification.getMapEntry("room")+" " + specification.getRating());
 			}
 		}
 		if(aspect.contains("service"))
@@ -230,7 +232,7 @@ public class QueryProcessor {
 			for(String word: aspectSet.get(aspect))
 			{
 					specification.setMapEntry("service", returnValue.nounPhrase);
-					System.out.println("service " + specification.getMapEntry("service"));
+					System.out.println("service " + specification.getMapEntry("service")+" " + specification.getRating());
 			}
 		}
 		if(aspect.contains("cleanliness"))
@@ -238,14 +240,37 @@ public class QueryProcessor {
 			for(String word: aspectSet.get(aspect))
 			{
 					specification.setMapEntry("cleanliness", returnValue.nounPhrase);
-					System.out.println("cleanliness " + specification.getMapEntry("cleanliness"));
+					System.out.println("cleanliness " + specification.getMapEntry("cleanliness")+" " + specification.getRating());
+			}
+		}
+		if(aspect.contains("misc"))
+		{
+			for(String word: aspectSet.get(aspect))
+			{
+					specification.setMapEntry("misc", returnValue.nounPhrase);
+					System.out.println("misc " + specification.getMapEntry("misc")+" " + specification.getRating());
 			}
 		}
 		queryObject.setSpecification(specification);
 		//System.out.println("return " + specification.getMapEntry("location"));
 	}
 	
-
+	public void setWeight() {
+		int sumRating = 0;
+		int numOfRating = 0;
+		HashMap<String, Specification> aspects = queryObject.getAspects();
+		for(String aspect: aspects.keySet())
+		{
+			sumRating += queryObject.getSpecification(aspect).ratingWeight;
+			numOfRating++;
+		}
+		for(String aspect: aspects.keySet())
+		{
+			int rating = queryObject.getSpecification(aspect).ratingWeight;
+			System.out.println(aspect+" "+(float)rating/sumRating);
+			queryObject.getSpecification(aspect).setWeight((float)rating/sumRating);
+		}
+	}
 	
 	public QueryObject processQuery(String query) {
 		
@@ -261,16 +286,18 @@ public class QueryProcessor {
 		{
 			ReturnValue returnValue = dependencyParse(nounPhrase);
 			int rating = returnValue.rating;
+			//System.out.println(rating);
 			HashMap<String, Set<String>> aspectSet = aspectGenerator.generateAspects(returnValue.nounPhrase);
 			String aspect = aspectGenerator.getMaxAspect(aspectSet);
 			addToSpecification(aspect, returnValue, aspectSet);
 		}
+		setWeight();
 		return queryObject;
 	}
 	
 	public static void main(String args[]) throws IOException{
 		QueryProcessor qProcessor = new QueryProcessor();
-		String query = "Hotels in Chicago with large rooms with excellent service and price less than $200";
+		String query = "Find hotels with big rooms with very good service in San Francaisco";
 		QueryObject queryObject = qProcessor.processQuery(query);
 		//System.out.println(queryObject.getAspects());
 	}

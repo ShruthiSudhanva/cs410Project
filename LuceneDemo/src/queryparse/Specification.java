@@ -7,6 +7,7 @@ public class Specification {
 
 	String aspectName;
 	float weight;
+	public int ratingWeight=0;
 	int rating;
 	HashMap<String, ArrayList<String>> specificationMap;
 	
@@ -32,6 +33,7 @@ public class Specification {
 	
 	public Specification setRating(int rating) {
 		this.rating = rating;
+		this.ratingWeight+=rating;
 		return this;
 	}
 	
@@ -43,8 +45,11 @@ public class Specification {
 		if(specificationMap.containsKey(specificationName))
 		{
 			ArrayList<String> words = specificationMap.get(specificationName);
-			if(!words.contains(value))
+			if(!words.contains(value)){
 				words.add(value);
+				if(this.ratingWeight<5 && !specificationName.equals("misc"))
+					this.ratingWeight+=1;
+			}
 			specificationMap.put(specificationName, words);
 		}
 		else {
