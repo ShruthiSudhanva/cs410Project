@@ -14,6 +14,8 @@ import java.util.Set;
 
 import javax.management.relation.Relation;
 
+import org.apache.lucene.queryparser.classic.ParseException;
+
 import queryparse.*;
 
 import edu.illinois.cs.cogcomp.lbj.chunk.Chunker;
@@ -257,12 +259,10 @@ public class QueryProcessor {
 	
 	public void setWeight() {
 		int sumRating = 0;
-		int numOfRating = 0;
 		HashMap<String, Specification> aspects = queryObject.getAspects();
 		for(String aspect: aspects.keySet())
 		{
 			sumRating += queryObject.getSpecification(aspect).ratingWeight;
-			numOfRating++;
 		}
 		for(String aspect: aspects.keySet())
 		{
@@ -279,13 +279,17 @@ public class QueryProcessor {
 		//To find hotel name??? -- Find hotel/suites/inn beside etc.		
 		ArrayList<String> nounPhrases = chunk(query);
 		AspectGenerator aspectGenerator = new AspectGenerator();
-		queryObject = new QueryObject("");
-		
+		String hotelName = nounPhrases.remove(0).replace("Find hotel", "").trim();
+		if(hotelName.length()>0)
+			System.out.println(hotelName);
+		queryObject = new QueryObject(hotelName);
+		String location = nounPhrases.remove(0).trim();
+		System.out.println(location);
+		queryObject.setLocation(location);
 		//For aspects not present set rating to default (0)
 		for(String nounPhrase: nounPhrases)
 		{
 			ReturnValue returnValue = dependencyParse(nounPhrase);
-			int rating = returnValue.rating;
 			//System.out.println(rating);
 			HashMap<String, Set<String>> aspectSet = aspectGenerator.generateAspects(returnValue.nounPhrase);
 			String aspect = aspectGenerator.getMaxAspect(aspectSet);
@@ -294,10 +298,11 @@ public class QueryProcessor {
 		setWeight();
 		return queryObject;
 	}
+
 	
 	public static void main(String args[]) throws IOException{
 		QueryProcessor qProcessor = new QueryProcessor();
-		String query = "Find hotels with big rooms with very good service in San Francaisco";
+		String query = "Find hotel in Seattle with clean rooms";
 		QueryObject queryObject = qProcessor.processQuery(query);
 		//System.out.println(queryObject.getAspects());
 	}

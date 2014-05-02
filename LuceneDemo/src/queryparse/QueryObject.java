@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class QueryObject {
 
 	private String hotelName;
+	private String location;
 	private HashMap<String,Specification> aspects;
 	
 	public QueryObject(String hotelName){
@@ -28,6 +29,14 @@ public class QueryObject {
 	
 	public String getHotelName() {
 		return hotelName;
+	}
+	
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
+	public String getLocation() {
+		return location;
 	}
 	
 	public HashMap<String, Specification> getAspects(){
