@@ -38,7 +38,7 @@ public class HotelIndexer
 		try
 		{
 			StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);;
-			DatasetParser parser = new DatasetParser("/home/shruthi/cs410Project/LuceneDemo/src/TripAdvisor/sample");
+			DatasetParser parser = new DatasetParser("/home/shruthi/cs410Project/LuceneDemo/src/TripAdvisor/TripAdvisor");
 			IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_47, analyzer);
 			Directory index = FSDirectory.open(new File( INDEX_DIRECTORY ));
 			IndexWriter indexWriter = new IndexWriter(index, config);
@@ -49,6 +49,8 @@ public class HotelIndexer
 			File [] listofFiles = parser.getListOfFiles();
 			for(File file: listofFiles){
 				Hotel hotel = parser.parse(file);
+				if(hotel.getLocation() == null || hotel.getHotelName() == null || hotel.getReviews() == null)
+					continue;
 				addDoc(indexWriter, hotel.getLocation(), hotel.getHotelName(), hotel.getReviews());
 			}
 			/*addDoc(indexWriter,"Chicago", "Best Western Downtown","close to lake navy pier");
@@ -132,12 +134,18 @@ public class HotelIndexer
 	
 	public static void main(String[] args)
 	{
+		//HotelIndexer.buildIndex();
+		String location = "Tokyo";
+		String name = "";
+		String other = "service";
 		try {
-			//HotelIndexer.buildIndex();
-			String location = "Chicago";
-			String name = "";
-			String other = "";
-			HotelIndexer.searchIndex(location,name,other);
+			ArrayList<Hotel> hotels = HotelIndexer.searchIndex(location,name,other);
+			for(Hotel hotel: hotels){
+				System.out.println(hotel.getHotelName()+"----------\n");
+				for(String review: hotel.getReviews()){
+					System.out.println(review+"\n\n");
+				}
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

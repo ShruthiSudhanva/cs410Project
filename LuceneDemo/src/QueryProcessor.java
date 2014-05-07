@@ -210,14 +210,14 @@ public class QueryProcessor {
 		}
 		if(aspect.contains("value"))
 		{
-			specification.setMapEntry("price", returnValue.nounPhrase);
+			specification.setMapEntry("price", returnValue.nounPhrase.trim());
 			System.out.println("value " + specification.getMapEntry("price")+ " " + specification.getRating());
 		}
 		if(aspect.contains("location"))
 		{
 			for(String word: aspectSet.get(aspect))
 			{
-					specification.setMapEntry("location", returnValue.nounPhrase);
+					specification.setMapEntry("location", returnValue.nounPhrase.trim());
 					System.out.println("location " + specification.getMapEntry("location")+" "+specification.getRating());
 			}
 		}
@@ -225,7 +225,7 @@ public class QueryProcessor {
 		{
 			for(String word: aspectSet.get(aspect))
 			{
-					specification.setMapEntry("room", returnValue.nounPhrase);
+					specification.setMapEntry("room", returnValue.nounPhrase.trim());
 					System.out.println("room " + specification.getMapEntry("room")+" " + specification.getRating());
 			}
 		}
@@ -233,7 +233,7 @@ public class QueryProcessor {
 		{
 			for(String word: aspectSet.get(aspect))
 			{
-					specification.setMapEntry("service", returnValue.nounPhrase);
+					specification.setMapEntry("service", returnValue.nounPhrase.trim());
 					System.out.println("service " + specification.getMapEntry("service")+" " + specification.getRating());
 			}
 		}
@@ -241,7 +241,7 @@ public class QueryProcessor {
 		{
 			for(String word: aspectSet.get(aspect))
 			{
-					specification.setMapEntry("cleanliness", returnValue.nounPhrase);
+					specification.setMapEntry("cleanliness", returnValue.nounPhrase.trim());
 					System.out.println("cleanliness " + specification.getMapEntry("cleanliness")+" " + specification.getRating());
 			}
 		}
@@ -249,7 +249,7 @@ public class QueryProcessor {
 		{
 			for(String word: aspectSet.get(aspect))
 			{
-					specification.setMapEntry("misc", returnValue.nounPhrase);
+					specification.setMapEntry("misc", returnValue.nounPhrase.trim());
 					System.out.println("misc " + specification.getMapEntry("misc")+" " + specification.getRating());
 			}
 		}
@@ -291,7 +291,7 @@ public class QueryProcessor {
 		{
 			ReturnValue returnValue = dependencyParse(nounPhrase);
 			//System.out.println(rating);
-			HashMap<String, Set<String>> aspectSet = aspectGenerator.generateAspects(returnValue.nounPhrase);
+			HashMap<String, Set<String>> aspectSet = aspectGenerator.generateAspects(returnValue.nounPhrase.trim());
 			String aspect = aspectGenerator.getMaxAspect(aspectSet);
 			addToSpecification(aspect, returnValue, aspectSet);
 		}

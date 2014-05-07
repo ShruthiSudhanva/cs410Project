@@ -105,7 +105,7 @@ public class DatasetParser {
 	public static void main(String args[]) {
 		DatasetParser parser;
 		try {
-			parser = new DatasetParser("/home/shruthi/cs410Project/LuceneDemo/src/TripAdvisor/sample");
+			parser = new DatasetParser("/home/shruthi/cs410Project/LuceneDemo/src/TripAdvisor/TripAdvisor");
 			File [] listofFiles = parser.getListOfFiles();
 			for(File file: listofFiles){
 				Hotel hotel = parser.parse(file);
