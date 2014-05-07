@@ -64,17 +64,17 @@ h1 {
 
       <div class="row">
        
-        <div class="col-lg-12 v-center">
+        <div class="col-lg-12 text-center v-center">
           
           <h1>Search Hotels</h1>
           <p class="lead">Text query search on hotel reviews</p>
           
           <br><br><br>
           
-          <form class="col-lg-12">
+          <form action="search.jsp" method="POST" class="col-lg-12">
             <div class="input-group" style="width:340px;text-align:center;margin:0 auto;">
-            <input type="text" class="form-control input-lg" id="search" placeholder="Enter query">
-              <span class="input-group-btn"><button type="button" class="btn btn-lg btn-primary submit">Search</button></span>
+            <input type="text" class="form-control input-lg" name="query" placeholder="Enter query">
+              <span class="input-group-btn"><button type="submit" class="btn btn-lg btn-primary submit">Search</button></span>
             </div>
           </form>
         </div>

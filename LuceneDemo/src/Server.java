@@ -36,9 +36,9 @@ public class Server
 			System.out.println("Results: "+results.size());
 			for(Hotel hotel: results){
 				resultString += hotel.getHotelName().trim() + "~" + hotel.getLocation() +"~";
-				for(String review: hotel.getReviews()){
+				/*for(String review: hotel.getReviews()){
 					resultString += review.replaceAll("[^A-Za-z0-9 .!?,()$%<>]", "") + "~";
-				}
+				}*/
 				resultString += "@@@";
 			}
 		} 
