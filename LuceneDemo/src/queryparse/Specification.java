@@ -1,7 +1,13 @@
 package queryparse;
 
+import main.HotelIndexer;
+import main.QueryProcessor;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.lucene.queryparser.classic.ParseException;
 
 public class Specification {
 
@@ -10,11 +16,13 @@ public class Specification {
 	public int ratingWeight=0;
 	int rating;
 	HashMap<String, ArrayList<String>> specificationMap;
+	HashMap<String, ArrayList<Integer>> count;
 	
 	public Specification(String aspectName)
 	{
 		this.aspectName = aspectName;
 		specificationMap= new HashMap<String, ArrayList<String>>();
+		count = new HashMap<String, ArrayList<Integer>>();
 	}
 	
 	public String getAspectName() {
@@ -63,4 +71,22 @@ public class Specification {
 	public ArrayList<String> getMapEntry(String specificationName) {
 		return specificationMap.get(specificationName);
 	}
+	
+	public ArrayList<Integer> getCount(String phrase) {
+		return count.get(phrase);
+	}
+	
+	public void computeCounts(ArrayList<String> hotelIds) throws ParseException, IOException {
+			for(String specificationName: specificationMap.keySet()){
+				for(String phrase: specificationMap.get(specificationName)){
+						ArrayList<Integer> counts = new ArrayList<Integer>();
+						for(String id: hotelIds){
+						//System.out.println("i'm here for" + specificationName);
+						//System.out.println(phrase+ " "+ HotelIndexer.getCount(id, phrase));
+						//counts.add(HotelIndexer.getCount(id, phrase));
+					}
+					count.put(phrase, counts);
+				}
+			}
+		}
 }

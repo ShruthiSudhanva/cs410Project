@@ -6,4 +6,4 @@ under <
 greater >
 above >
 more >
-around =
+around <>

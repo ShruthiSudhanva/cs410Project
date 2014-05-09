@@ -1,6 +1,10 @@
 package queryparse;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.lucene.queryparser.classic.ParseException;
 
 public class QueryObject {
 
@@ -41,6 +45,17 @@ public class QueryObject {
 	
 	public HashMap<String, Specification> getAspects(){
 		return aspects;
+	}
+	
+	public void computeCounts(ArrayList<String> hotelIds) {
+		for(String aspect: aspects.keySet()){
+			try {
+				aspects.get(aspect).computeCounts(hotelIds);
+			} catch (ParseException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	//Use this function to access example objects
