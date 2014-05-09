@@ -95,7 +95,7 @@ h1 {
         <div class="col-lg-12">
           <p class="text-center">CS410 Class Project</p>
           <p class="text-center">Team: Shruthi Sudhanva, Sinduja Subramaniam</p>
-          <p class="text-center">Guided by Hongning</p>
+          <p class="text-center"></p>
         </div>
     </div>
 </div>

@@ -149,6 +149,12 @@ public class HotelIndexer
 	      Hotel hotel = new Hotel();
 	      hotel.setHotelName(resultHotelName);
 	      hotel.setLocation(resultHotelLocation);
+	      hotel.ratings.put("cleanliness", Float.parseFloat(d.get("cleanliness")));
+	      hotel.ratings.put("service", Float.parseFloat(d.get("service")));
+	      hotel.ratings.put("loc" , Float.parseFloat(d.get("loc")));
+	      hotel.ratings.put("room", Float.parseFloat(d.get("room")));
+	      hotel.ratings.put("value", Float.parseFloat(d.get("value")));
+	      System.out.println(hotel.ratings.get("cleanliness"));
 	      //hotel.setReviews(resultReviews);
 	      //hotel.addReview(review);
 	      results.add(hotel);
@@ -254,6 +260,12 @@ public class HotelIndexer
 	      hotel.setHotelName(resultHotelName);
 	      hotel.setLocation(resultHotelLocation);
 	      hotel.count = Long.parseLong(d.get("count"));
+	      hotel.ratings.put("cleanliness", Float.parseFloat(d.get("cleanliness")));
+	      hotel.ratings.put("service", Float.parseFloat(d.get("service")));
+	      hotel.ratings.put("loc" , Float.parseFloat(d.get("loc")));
+	      hotel.ratings.put("room", Float.parseFloat(d.get("room")));
+	      hotel.ratings.put("value", Float.parseFloat(d.get("value")));
+	      //System.out.println(hotel.ratings.get("cleanliness"));
 	      results.add(hotel);
 	    }
 	    

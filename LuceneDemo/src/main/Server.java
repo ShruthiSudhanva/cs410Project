@@ -69,7 +69,8 @@ public class Server
 			System.out.println("Results: "+results.size());
 			resultString = room + "%%%" + loc +"%%%" + service +"%%%" + cleanliness +"%%%" + value + "%%%";
 			for(Hotel hotel: results){
-				resultString +=  hotel.getId() + "###" + hotel.getHotelName().trim() + "###" + hotel.getLocation() +"###" + hotel.count + "###";
+				resultString +=  hotel.getId() + "###" + hotel.getHotelName().trim() + "###" + hotel.getLocation() +"###" + hotel.count + "###" ;
+				resultString +=  hotel.ratings.get("room") +"###" + hotel.ratings.get("loc") + "###" + hotel.ratings.get("service") + "###" + hotel.ratings.get("cleanliness") + "###" + hotel.ratings.get("value") + "###";
 				/*for(String review: hotel.getReviews()){
 					resultString += review.replaceAll("[^A-Za-z0-9 .!?,()$%<>]", "") + "~";
 				}*/
