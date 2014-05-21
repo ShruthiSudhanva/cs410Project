@@ -23,7 +23,7 @@ class Hotel{
 	long serviceCount;
 	long cleanCount;
 	long locationCount;
-	
+	static long allcount;
 	public Hotel() {
 		// TODO Auto-generated constructor stub
 		reviews = new ArrayList<String>();
@@ -193,25 +193,28 @@ public class DatasetParser {
 		rating = hotel.ratings.get("room")/hotel.roomCount;
 		hotel.ratings.put("room", rating);
 		rating = hotel.ratings.get("cleanliness")/hotel.cleanCount;
-		hotel.ratings.put("clean", rating);
+		hotel.ratings.put("cleanliness", rating);
 		rating = hotel.ratings.get("service")/hotel.serviceCount;
 		hotel.ratings.put("service", rating);
 		bReader.close();
+		Hotel.allcount += hotel.count;
 		return hotel;
 	}
 	
 	public static void main(String args[]) {
 		DatasetParser parser;
 		try {
-			parser = new DatasetParser("/home/shruthi/cs410Project/LuceneDemo/src/TripAdvisor/sample");
+			parser = new DatasetParser("/home/shruthi/cs410Project/LuceneDemo/src/TripAdvisor/TripAdvisor");
 			File [] listofFiles = parser.getListOfFiles();
+			int i=0;
 			for(File file: listofFiles){
 				Hotel hotel = parser.parse(file);
+				i++;
 			}
+			System.out.println(Hotel.allcount/i);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		}
 }
-
