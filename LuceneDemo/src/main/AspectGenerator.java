@@ -7,6 +7,7 @@ public class AspectGenerator{
 	{
 		dictionary = new HashMap<String, String>();
 		try {
+			//Read text file with aspects and associated words
 			BufferedReader br = new BufferedReader(new FileReader("/home/shruthi/cs410Project/LuceneDemo/src/hotel_bootstrapping_new.dat"));
 			String nextLine;
 			while((nextLine = br.readLine())!= null)
@@ -28,6 +29,7 @@ public class AspectGenerator{
 		}
 	}
 	
+	//returns the aspect that contains maximum size
 	public String getMaxAspect(HashMap<String, Set<String>> aspectWordList) {
 		String maxAspect = "";
 		int max = 0;
@@ -42,6 +44,7 @@ public class AspectGenerator{
 		return maxAspect;
 	}
 	
+	//generates a hashmap with list of aspects and values
 	public HashMap<String, Set<String>> generateAspects(String nounPhrase) {
 		String aspect = "";	
 		String [] words = nounPhrase.split(" ");
@@ -62,6 +65,7 @@ public class AspectGenerator{
 		return aspectWordList;
 	}
 	
+	//gets the aspect from the dictionary hashmap built using aspects-associated words file
 	public String getAspect(String word) {
 		if(dictionary.containsKey(word))
 		{
