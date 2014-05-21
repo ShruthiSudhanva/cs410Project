@@ -1,7 +1,7 @@
 package main;
 import java.io.*;
 import java.net.*;
-
+/*This class is used only for the UI purposes*/
 public class Client
 {
  public static void main(String argv[]) throws Exception
