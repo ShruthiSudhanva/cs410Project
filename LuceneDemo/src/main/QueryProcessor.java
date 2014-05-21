@@ -1,14 +1,13 @@
 package main;
-/*Pre process query here*/
-
-import indexer.HotelIndexer;
+/* This class processes the text query given as input
+ * Tip : Use class in a server for faster response
+ * 
+ */
 
 import java.io.BufferedReader;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,9 +15,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.management.relation.Relation;
-
-import org.apache.lucene.queryparser.classic.ParseException;
 
 import queryparse.*;
 
@@ -30,7 +26,6 @@ import LBJ2.nlp.seg.Token;
 
 import edu.stanford.nlp.ling.Sentence;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
-import edu.stanford.nlp.process.WordToSentenceProcessor.NewlineIsSentenceBreak;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.GrammaticalStructureFactory;
 import edu.stanford.nlp.trees.PennTreebankLanguagePack;
@@ -38,9 +33,7 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreebankLanguagePack;
 import edu.stanford.nlp.trees.TypedDependency;
 
-import queryparse.*;
-
-
+/*The class which performs all processing on input text query*/
 public class QueryProcessor {
 
 	public static LexicalizedParser lp;
@@ -53,9 +46,12 @@ public class QueryProcessor {
 	public QueryObject queryObject;
 	public Chunker tagger;
 	public static HashSet<String> stop = new HashSet<String>();
+	private static String path = "/home/shruthi/cs410Project/LuceneDemo/src/";
 	
+	/*Constructor*/
 	public QueryProcessor() throws IOException
 	{
+		/* Load and initialize Chunker and Dependency parser*/
 		if(lp==null)
 		{
 			lp = LexicalizedParser.loadModel(
@@ -76,7 +72,7 @@ public class QueryProcessor {
 		if(adverbMap==null)
 		{
 			adverbMap = new HashMap<String, Integer>();
-			BufferedReader br = new BufferedReader(new FileReader("/home/shruthi/cs410Project/LuceneDemo/src/adverbWords.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "adverbWords.txt"));
 			String line;
 			while ((line = br.readLine()) != null) {
 			   String [] field = line.split(" ");
@@ -87,7 +83,7 @@ public class QueryProcessor {
 		if(adjectiveMap==null)
 		{
 			adjectiveMap = new HashMap<String, Integer>();
-			BufferedReader br = new BufferedReader(new FileReader("/home/shruthi/cs410Project/LuceneDemo/src/adjectiveWords.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "adjectiveWords.txt"));
 			String line;
 			while ((line = br.readLine()) != null) {
 			   String [] field = line.split(" ");
@@ -98,7 +94,7 @@ public class QueryProcessor {
 		if(priceAdjectives==null)
 		{
 			priceAdjectives = new HashMap<String, String>();
-			BufferedReader br = new BufferedReader(new FileReader("/home/shruthi/cs410Project/LuceneDemo/src/priceAdjectives.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "priceAdjectives.txt"));
 			String line;
 			while ((line = br.readLine()) != null) {
 			   String [] fields = line.split(" ");
@@ -109,7 +105,7 @@ public class QueryProcessor {
 		if(locationWords==null)
 		{
 			locationWords = new ArrayList<String>();
-			BufferedReader br = new BufferedReader(new FileReader("/home/shruthi/cs410Project/LuceneDemo/src/locationDictionary.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "locationDictionary.txt"));
 			String line;
 			while ((line = br.readLine()) != null) {
 			   String [] fields = line.split(" ");
@@ -120,12 +116,16 @@ public class QueryProcessor {
 		}
 	}
 	
+	
+	/*A intermediary class to store multiple return values from module dependencyParse*/
 	public class ReturnValue{
 		public String nounPhrase;
 		public String parsedNounPhrase;
 		public int rating;
 	}
 	
+	
+	/*Identifies adverbs and adjectives and assigns weights defined in adjectiveWords.txt and adverbWords.txt*/
 	public ReturnValue dependencyParse(String query) {
 		
 		ReturnValue returnvalue = new ReturnValue();
@@ -156,16 +156,16 @@ public class QueryProcessor {
 					returnvalue.parsedNounPhrase = returnvalue.parsedNounPhrase.replace(adverb, "");
 				}
 			}
-			//System.out.println(tdDependency + "    Relation->" + tdDependency.reln() + "   Dependency->" + tdDependency.dep().pennString());
 	    }
 		returnvalue.nounPhrase = query;
 		returnvalue.rating = (int)rating*3/10;
 		return returnvalue;
 	}
 	
+	
+	/*Chunks the input query into phrases*/
 	public ArrayList<String> chunk(String query) {
 		
-		//String query = "clean and big hotel in Seattle in good location";
 		ArrayList<String> nounPhrases = new ArrayList<String>();
 		String[] tokens = query.split("[ ]+");
 		String[] args = {query};
@@ -175,20 +175,29 @@ public class QueryProcessor {
 			          new SentenceSplitter(args)));
 		Object nextObject;
 		int token = 0;
-		String nounPhrase = null;
+		String nounPhrase = null;			
+		String sign = "";
 		while((nextObject = parser.next())!=null)
 		{
 			Token w = (Token) nextObject;
 			String tag = tagger.discreteValue(w);
-			if(tag.contains("B-NP"))
+			//System.out.println(tokens[token] + " " + tag);
+			if(priceAdjectives.containsKey(tokens[token])){
+				sign = priceAdjectives.get(tokens[token]);
+			}
+			if(tokens[token].matches("\\d+") || tokens[token].contains("$")){
+				tokens[token] = sign + tokens[token];
+			}
+			if(tag.contains("B-NP") )
 			{
 				if(nounPhrase!=null)
 					nounPhrases.add(nounPhrase);
 				nounPhrase = tokens[token];
 			}
-			if(tag.contains("I-NP")|| tag.contains("ADJP") )
+			if(tag.contains("I-NP")|| tag.contains("ADJP") || tag.contains("ADVP") || tag.contains("B-PP"))
 			{
-				nounPhrase = nounPhrase.concat(" "+tokens[token]);
+				if(!stop.contains(tokens[token]))
+					nounPhrase = nounPhrase.concat(" "+tokens[token]);
 			}
 			token++;
 		}
@@ -197,6 +206,7 @@ public class QueryProcessor {
 		return nounPhrases;
 	}
 	
+	/*Create specification objects for each aspect and assign rating, weights and phrases*/
 	public void addToSpecification(String aspect, ReturnValue returnValue, HashMap<String, Set<String>> aspectSet)
 	{
 		Specification specification;
@@ -217,8 +227,11 @@ public class QueryProcessor {
 		}
 		if(aspect.contains("value"))
 		{
-			specification.setMapEntry("price", returnValue.nounPhrase.trim());
-			System.out.println("value " + specification.getMapEntry("price")+ " " + specification.getRating());
+			for(String word: aspectSet.get(aspect))
+			{
+				specification.setMapEntry("price", returnValue.nounPhrase.trim());
+				System.out.println("value " + specification.getMapEntry("price")+ " " + specification.getRating());
+			}
 		}
 		if(aspect.contains("location"))
 		{
@@ -261,9 +274,9 @@ public class QueryProcessor {
 			}
 		}
 		queryObject.setSpecification(specification);
-		//System.out.println("return " + specification.getMapEntry("location"));
 	}
 	
+	/*Module to assign relative weights to each aspect*/
 	public void setWeight() {
 		int sumRating = 0;
 		HashMap<String, Specification> aspects = queryObject.getAspects();
@@ -278,37 +291,12 @@ public class QueryProcessor {
 			queryObject.getSpecification(aspect).setWeight((float)rating/sumRating);
 		}
 	}
-	
-	public QueryObject processQuery(String query) {
-		
-		
-		ArrayList<String> nounPhrases = chunk(query);
-		AspectGenerator aspectGenerator = new AspectGenerator();
-		String hotelName = nounPhrases.remove(0).replace("Find hotel", "").trim();
-		if(hotelName.length()>0)
-			System.out.println(hotelName);
-		queryObject = new QueryObject(hotelName);
-		String location = nounPhrases.remove(0).trim();
-		System.out.println(location);
-		queryObject.setLocation(location);
-		//For aspects not present set rating to default (0)
-		for(String nounPhrase: nounPhrases)
-		{
-			ReturnValue returnValue = dependencyParse(nounPhrase);
-			
-			HashMap<String, Set<String>> aspectSet = aspectGenerator.generateAspects(returnValue.parsedNounPhrase.trim());
-			String aspect = aspectGenerator.getMaxAspect(aspectSet);
-			addToSpecification(aspect, returnValue, aspectSet);
-		}
-		setWeight();
-		return queryObject;
-	}
 
+	/*Module to create a dictionary for stop words*/
 	public static void buildStopWords()
 	{
-
 		try{
-			BufferedReader br = new BufferedReader(new FileReader("/home/shruthi/cs410Project/LuceneDemo/src/stop_words.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(path + "stop_words.txt"));
 			String line;
 			while((line=br.readLine())!=null)
 			   {
@@ -320,11 +308,34 @@ public class QueryProcessor {
 			System.out.println(e);
 		}
 	}
+	
+	/*Main module invoked by user. Returns a QueryObject containing specifications and all details*/
+	public QueryObject processQuery(String query) {
+		ArrayList<String> nounPhrases = chunk(query);
+		AspectGenerator aspectGenerator = new AspectGenerator();
+		String hotelName = nounPhrases.remove(0).replace("Find hotel", "").trim();
+		if(hotelName.length()>0)
+			System.out.println(hotelName);
+		queryObject = new QueryObject(hotelName);
+		String location = nounPhrases.remove(0).trim();
+		System.out.println(location);
+		queryObject.setLocation(location);
+		for(String nounPhrase: nounPhrases)
+		{
+			ReturnValue returnValue = dependencyParse(nounPhrase);
+			HashMap<String, Set<String>> aspectSet = aspectGenerator.generateAspects(returnValue.parsedNounPhrase.trim());
+			String aspect = aspectGenerator.getMaxAspect(aspectSet);
+			addToSpecification(aspect, returnValue, aspectSet);
+		}
+		setWeight();
+		return queryObject;
+	}
+	
+	
+	/*An example for usage*/
 	public static void main(String args[]) throws IOException{
 		QueryProcessor qProcessor = new QueryProcessor();
-		String query = "Find hotel in Seattle with location far from downtown with price above 200";
+		String query = "Find hotels in Seattle having price below $200 and in city center and good service";
 		QueryObject queryObject = qProcessor.processQuery(query);
-		HotelIndexer indexer = new HotelIndexer("/home/shruthi/cs410Project/LuceneDemo/Hotel");
-		String hotelNameLocation = queryObject.getHotelName() + queryObject.getLocation();
-		}
+	}
 }
