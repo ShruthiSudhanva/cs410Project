@@ -30,7 +30,7 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.BooleanClause;
 
 
-public class HotelIndexerOrig 
+public class HotelIndexer 
 {
 	
 	public static String INDEX_DIRECTORY = "indexDirectory";
@@ -192,7 +192,7 @@ public class HotelIndexerOrig
 	
 	public static void main(String[] args)
 	{
-		HotelIndexerOrig.buildIndex();
+		HotelIndexer.buildIndex();
 		/*String location = "Seattle";
 		String name = "";
 		String other = "clean room";
