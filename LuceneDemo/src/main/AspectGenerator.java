@@ -1,15 +1,4 @@
 package main;
-/*
-
-buildDictionary method takes the hotel_bootstrapping_new.dat file as input and builds the dictionary and results a hashmap.
- 
-getFromDictionary method takes the Query in the form of only noun phrases in this format:
-nounphrase1a nounphrase1b,nounphrase2,nounphrase3,nounphrase3a nounphrase3b
-So, it has to be called right after LBJ is called with the query string as the parameter. Since we need the dictionary from previous step - we pass dictionary,query as the parameters.
-It returns a hashmap that contains the noun phrases and their tag from the dictionary separated by space.
-
-Note:uncomment the for loops in this code to see output.
-*/
 import java.io.*;
 import java.util.*;
 public class AspectGenerator{
@@ -35,7 +24,6 @@ public class AspectGenerator{
 			}
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
