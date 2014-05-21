@@ -1,8 +1,0 @@
-excellent 4
-good 4
-exceptional 5
-amazing 5
-great 4
-nice 3
-decent 2
-best 4
