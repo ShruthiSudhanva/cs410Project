@@ -7,7 +7,6 @@ import java.util.Random;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -15,22 +14,18 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.PhraseQuery;
-import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.BooleanClause;
 
 
-public class HotelIndexer 
+public class HotelIndexer
 {
 	
 	public static String INDEX_DIRECTORY = "indexDirectory";
@@ -45,7 +40,6 @@ public class HotelIndexer
 			Directory index = FSDirectory.open(new File( INDEX_DIRECTORY ));
 			IndexWriter indexWriter = new IndexWriter(index, config);
 			random = new Random();
-			int i=0;
 			//	Specify the analyzer for tokenizing text.
 		    //	The same analyzer should be used for indexing and searching
 			File [] listofFiles = parser.getListOfFiles();
@@ -55,7 +49,12 @@ public class HotelIndexer
 					continue;
 				addDoc(indexWriter, hotel.getLocation(), hotel.getHotelName(), hotel.getReviews(), hotel.getId());
 			}
-		
+			/*addDoc(indexWriter,"Chicago", "Best Western Downtown","close to lake navy pier");
+			addDoc(indexWriter,"Chicago", "Whitehall Suites","right on the magnificient mile");
+			addDoc(indexWriter,"New York", "Marriott New York","great location times square");
+			addDoc(indexWriter,"New York", "Hilton Times Square","a block from times square");
+			addDoc(indexWriter,"New York", "Holiday Inn Central","view central park from the window");
+			addDoc(indexWriter,"Seattle", "Best Western Pioneer Square Hotel","cheap and comfortable");*/
 			indexWriter.close();
 		}
 		catch(Exception e)
@@ -82,7 +81,6 @@ public class HotelIndexer
 		System.out.println("location"+" "+location+" name"+ name +" other " +other);
 		ArrayList<Hotel> results = new ArrayList<Hotel>();
 		BooleanQuery qry = new BooleanQuery();
-		StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);
 		//	Text to search
 		if(!location.isEmpty())
 		{
