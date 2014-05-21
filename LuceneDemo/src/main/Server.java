@@ -1,5 +1,5 @@
 package main;
-	import java.io.*;
+import java.io.*;
 import java.io.ObjectInputStream.GetField;
 import java.net.*;
 import java.util.ArrayList;
