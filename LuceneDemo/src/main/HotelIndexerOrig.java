@@ -55,12 +55,7 @@ public class HotelIndexerOrig
 					continue;
 				addDoc(indexWriter, hotel.getLocation(), hotel.getHotelName(), hotel.getReviews(), hotel.getId());
 			}
-			/*addDoc(indexWriter,"Chicago", "Best Western Downtown","close to lake navy pier");
-			addDoc(indexWriter,"Chicago", "Whitehall Suites","right on the magnificient mile");
-			addDoc(indexWriter,"New York", "Marriott New York","great location times square");
-			addDoc(indexWriter,"New York", "Hilton Times Square","a block from times square");
-			addDoc(indexWriter,"New York", "Holiday Inn Central","view central park from the window");
-			addDoc(indexWriter,"Seattle", "Best Western Pioneer Square Hotel","cheap and comfortable");*/
+		
 			indexWriter.close();
 		}
 		catch(Exception e)
