@@ -65,7 +65,6 @@ public class Server
 			SortField[] sortFields = new SortField[sortList.size()];
 			sortFields = (SortField[]) sortList.toArray(sortFields);
 			ArrayList<Hotel> results = HotelIndexer.searchIndex(location, name , other , aspectsHashMap, sortFields);
-			//ArrayList<Hotel> results = HotelIndexer.simpleSearch(location, name, other);
 			System.out.println("Results: "+results.size());
 			resultString = room + "%%%" + loc +"%%%" + service +"%%%" + cleanliness +"%%%" + value + "%%%";
 			for(Hotel hotel: results){
