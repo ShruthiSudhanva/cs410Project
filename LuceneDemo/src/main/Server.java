@@ -71,14 +71,12 @@ public class Server
 			for(Hotel hotel: results){
 				resultString +=  hotel.getId() + "###" + hotel.getHotelName().trim() + "###" + hotel.getLocation() +"###" + hotel.count + "###" ;
 				resultString +=  hotel.ratings.get("room") +"###" + hotel.ratings.get("loc") + "###" + hotel.ratings.get("service") + "###" + hotel.ratings.get("cleanliness") + "###" + hotel.ratings.get("value") + "###";
-				/*for(String review: hotel.getReviews()){
-					resultString += review.replaceAll("[^A-Za-z0-9 .!?,()$%<>]", "") + "~";
-				}*/
+			
 				resultString += "@@@";
 			}
 		} 
 		catch (ParseException | IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return resultString;
@@ -102,7 +100,7 @@ public class Server
             capitalizedSentence = query + '\n';
             QueryObject queryObject = queryProcessor.processQuery(query);
             String resultString = search(queryObject)+"\n";
-            //System.out.println(resultString);
+            
             outToClient.writeBytes(resultString);
          }
       }
