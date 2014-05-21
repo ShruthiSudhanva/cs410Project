@@ -281,9 +281,7 @@ public class QueryProcessor {
 	
 	public QueryObject processQuery(String query) {
 		
-		/* This is slow. Not sure why. And needs more parsing!*/
-		//To find hotel location - prep_in and prep_near???
-		//To find hotel name??? -- Find hotel/suites/inn beside etc.		
+		
 		ArrayList<String> nounPhrases = chunk(query);
 		AspectGenerator aspectGenerator = new AspectGenerator();
 		String hotelName = nounPhrases.remove(0).replace("Find hotel", "").trim();
@@ -297,7 +295,7 @@ public class QueryProcessor {
 		for(String nounPhrase: nounPhrases)
 		{
 			ReturnValue returnValue = dependencyParse(nounPhrase);
-			//System.out.println(rating);
+			
 			HashMap<String, Set<String>> aspectSet = aspectGenerator.generateAspects(returnValue.parsedNounPhrase.trim());
 			String aspect = aspectGenerator.getMaxAspect(aspectSet);
 			addToSpecification(aspect, returnValue, aspectSet);
@@ -328,12 +326,5 @@ public class QueryProcessor {
 		QueryObject queryObject = qProcessor.processQuery(query);
 		HotelIndexer indexer = new HotelIndexer("/home/shruthi/cs410Project/LuceneDemo/Hotel");
 		String hotelNameLocation = queryObject.getHotelName() + queryObject.getLocation();
-		//System.out.println(hotelNameLocation);
-		/*ArrayList<String> hotelIds = indexer.searchIndex(hotelNameLocation);
-		queryObject.computeCounts(hotelIds);
-		System.out.println(hotelIds);
-		System.out.println(queryObject.getSpecification("cleanliness").getCount("clean room"));
-		System.out.println(queryObject.getSpecification("location").getCount("good location"));*/
-		//System.out.println(queryObject.getAspects());
-	}
+		}
 }
