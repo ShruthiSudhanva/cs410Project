@@ -1,5 +1,4 @@
 package main;
-/*Query expansion using wordnet - not necessary, but just in case*/
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,7 +35,7 @@ public class CustomAnalyzer extends Analyzer {
 		try {
 			mySynonymMap = buildSynonym();
 		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	    filter = new SynonymFilter(filter, mySynonymMap, false);	    
