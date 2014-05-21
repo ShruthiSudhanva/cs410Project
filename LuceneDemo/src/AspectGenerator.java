@@ -7,7 +7,6 @@ nounphrase1a nounphrase1b,nounphrase2,nounphrase3,nounphrase3a nounphrase3b
 So, it has to be called right after LBJ is called with the query string as the parameter. Since we need the dictionary from previous step - we pass dictionary,query as the parameters.
 It returns a hashmap that contains the noun phrases and their tag from the dictionary separated by space.
 
-Note:uncomment the for loops in this code to see output.
 */
 import java.io.*;
 import java.util.*;
