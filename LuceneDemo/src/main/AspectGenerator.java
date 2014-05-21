@@ -1,8 +1,14 @@
 package main;
+/*
+Uses hotel_bootstrapping_new.dat to assign aspects to noun phrases passed as input
+Called from QueryProcessor class
+*/
 import java.io.*;
 import java.util.*;
 public class AspectGenerator{
 	private HashMap<String, String> dictionary;
+		/*Constructor generates a dictionary from the file containing words and aspects*/
+
 	public AspectGenerator()
 	{
 		dictionary = new HashMap<String, String>();
