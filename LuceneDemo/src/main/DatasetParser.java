@@ -25,7 +25,7 @@ class Hotel{
 	long locationCount;
 	static long allcount;
 	public Hotel() {
-		// TODO Auto-generated constructor stub
+		
 		reviews = new ArrayList<String>();
 		ratings = new HashMap<String, Float>();
 		ratings.put("value",0f);
@@ -213,7 +213,7 @@ public class DatasetParser {
 			}
 			System.out.println(Hotel.allcount/i);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		}
