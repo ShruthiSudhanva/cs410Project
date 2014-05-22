@@ -7,7 +7,8 @@ import java.io.*;
 import java.util.*;
 public class AspectGenerator{
 	private HashMap<String, String> dictionary;
-	private String path = "/home/shruthi/cs410Project/LuceneDemo/src/";
+	/*Replace the path with the path to your src*/
+	private String path = "/home/shruthi/cs410Project/LuceneDemo/src/"; 
 	
 	/*Constructor generates a dictionary from the file containing words and aspects*/
 	public AspectGenerator()
@@ -31,7 +32,7 @@ public class AspectGenerator{
 			}
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 	}
