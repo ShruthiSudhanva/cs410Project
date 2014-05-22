@@ -27,7 +27,7 @@ public class CustomAnalyzer extends Analyzer {
 
 	@Override
 	protected TokenStreamComponents createComponents(String fieldName, Reader reader){
-		// TODO Auto-generated method stub
+		
 		Tokenizer source = new ClassicTokenizer(Version.LUCENE_47, reader);
 	    TokenStream filter = new StandardFilter(Version.LUCENE_47, source);
 	    filter = new LowerCaseFilter(Version.LUCENE_47,filter);
